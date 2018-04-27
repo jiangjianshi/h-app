@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+    <!-- 定义日志输出格式 -->
+    <property name="LOG_PATTERN" value="%date{yyyy-MM-dd HH:mm:ss.SSS} %-5level %class:%line - %msg%n"/>
+	<property name="ACCESS_PATTERN" value="%date{yyyy-MM-dd HH:mm:ss}|2|%level|%msg%n"/>    
+	<property name="LOG_FILE_PATH" value="/data/logs/hzf_platform_project/logs/app-logs/"/>
+	<property name="ACCESS_FILE_PATH" value="/data/logs/hzf_platform_project/logs/app-access-logs/" />
+   
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_FILE_PATH}/app.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE_PATH}/app.%d{yyyyMMdd}.log</fileNamePattern>
+            <maxHistory>1</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+        <append>true</append>
+    </appender>
+    
+    <appender name="ACCESS_FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${ACCESS_FILE_PATH}/access.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${ACCESS_FILE_PATH}/access.%d{yyyyMMdd}.log</fileNamePattern>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${ACCESS_PATTERN}</pattern>
+		</encoder>
+		<append>true</append>
+	</appender>
+	
+    <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_FILE_PATH}/app_error.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE_PATH}/app_error.%d{yyyyMMdd}.log</fileNamePattern>
+            <maxHistory>1</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>WARN</level>
+		</filter>
+        <append>true</append>
+    </appender>
+
+    <!-- 在生产环境，必须将下面的两个配置改为INFO -->
+    <logger name="com.huifenqi.hzf_platform" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="FILE_ERROR"/>
+    </logger>
+
+	<logger name="com.huifenqi.hzf_platform.utils.AccessLogUtils" level="INFO" additivity="false">
+        <appender-ref ref="ACCESS_FILE"/>
+    </logger>
+
+    <root level="INFO">
+        <!-- 启用的appender列表 -->
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="FILE_ERROR"/>
+    </root>
+
+</configuration>

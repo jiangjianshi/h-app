@@ -1,0 +1,81 @@
+buildscript {
+    repositories {
+        maven {
+            name 'aliyun maven'
+            url 'http://maven.aliyun.com/nexus/content/groups/public/'
+        }
+        maven { url "https://repo.spring.io/plugins-snapshot" }
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.3.3.RELEASE")
+        classpath ("io.spring.gradle:dependency-management-plugin:0.6.1.RELEASE")
+    }
+}
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+apply plugin: "io.spring.dependency-management"
+
+compileJava {
+    options.fork = true
+    options.forkOptions.executable = "javac"
+    options.compilerArgs << "-XDignore.symbol.file"
+}
+
+jar {
+    baseName = 'hzf-platform'
+    version =  '15.30.04.20180312'
+}
+
+repositories {
+    maven {
+        url  "http://jcenter.bintray.com"
+    }
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-data-mongodb:1.3.0.RELEASE")
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-autoconfigure")
+    compile("org.springframework.boot:spring-boot-starter-logging")
+    compile('org.springframework.boot:spring-boot-starter-redis:1.3.0.RELEASE')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-data-solr')
+    compile('org.springframework.boot:spring-boot-starter-test')
+    compile("org.apache.commons:commons-lang3:3.4")
+    compile("com.amazonaws:aws-java-sdk-core:1.9.3")
+    compile("com.google.guava:guava:18.0")
+    compile("org.apache.tika:tika-core:1.12")
+    compile("org.apache.commons:commons-collections4:4.0")
+    compile("commons-beanutils:commons-beanutils:1.8.3")
+    compile("org.apache.httpcomponents:httpclient:4.5")
+    compile("mysql:mysql-connector-java:5.1.36")
+    compile("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
+    compile("org.codehaus.woodstox:woodstox-core-asl:4.4.1")
+    compile("com.google.code.gson:gson:2.3.1")
+    compile("net.coobird:thumbnailator:0.4.8")
+    compile("net.sf.dozer:dozer:5.5.1")
+    compile("com.alibaba:fastjson:1.2.31")
+    compile("com.aliyun.oss:aliyun-sdk-oss:2.6.0")
+    compile("org.apache.httpcomponents:httpmime:4.5.1")
+    compile("com.github.penggle:kaptcha:2.3.2")
+    compile(group:'javax.mail', name:'mail', version:'1.4')
+    compile(group: 'org.apache.poi', name: 'poi-ooxml', version: '3.10-FINAL')
+    compile(group:'org.apache.poi', name: 'poi', version: '3.15')
+    compile(group:'com.aliyun', name:'aliyun-java-sdk-core', version:'3.2.3')
+    compile(group:'org.apache.httpcomponents', name:'httpcore-nio', version:'4.4.1')
+    compile(group: 'org.apache.httpcomponents', name: 'httpasyncclient', version: '4.1')
+    compile fileTree(dir:'lib',include:['*.jar'])
+    testCompile("junit:junit")
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.4'
+}
